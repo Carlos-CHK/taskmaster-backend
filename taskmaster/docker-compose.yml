@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    ports: ["8080:8080"]
+    depends_on: [db]
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/taskmaster_db
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS:-3600000}
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: taskmaster_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports: ["5432:5432"]
